@@ -51,5 +51,5 @@ $ npm run start
 - [ ] Transaction Class
 - [ ] DAG Class
 - [ ] Genesis Transaction
-- [ ] Hashchain Class
+- [ ] Hashchain Class (replace with localchains)
 

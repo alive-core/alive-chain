@@ -1,5 +1,6 @@
 {
   "totalSupply": 50000000,
   "name": "AliveChain",
-  "digitsAfterDecimalPoint": 8
+  "digitsAfterDecimalPoint": 8,
+  "pathLocalChain": "./localchain.ndjson"
 }

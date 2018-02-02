@@ -102,16 +102,17 @@ module.exports = require("crypto");
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__app_Hashchain__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_Wallet__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__app_Localchain__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_Wallet__ = __webpack_require__(7);
 
 
 
-const privateKey  = new __WEBPACK_IMPORTED_MODULE_1__app_Wallet__["a" /* default */]().createPrivateKey();
-new __WEBPACK_IMPORTED_MODULE_0__app_Hashchain__["a" /* default */]().generateHashChain()
+//const privateKey  = new Wallet().createPrivateKey();
+new __WEBPACK_IMPORTED_MODULE_0__app_Localchain__["a" /* default */]().generateHashedTransaction()
+//new Localchain().readLine()
 
-console.log(privateKey);
-console.log(new __WEBPACK_IMPORTED_MODULE_1__app_Wallet__["a" /* default */]().createPublicKey(privateKey));
+//console.log(privateKey);
+//console.log(new Wallet().createPublicKey(privateKey));
 
 
 
@@ -123,10 +124,11 @@ console.log(new __WEBPACK_IMPORTED_MODULE_1__app_Wallet__["a" /* default */]().c
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Encrypt__ = __webpack_require__(0);
 const config = __webpack_require__(4);
 const fs = __webpack_require__(5);
+const readline = __webpack_require__(6);
 
 
 
-class Hashchain {
+class Localchain {
   constructor() {
     this.totalSupply = config.totalSupply;
   }
@@ -146,22 +148,44 @@ class Hashchain {
     return transactionObj;
   }
 
-  generateHashChain(){
-    let genesis = this.constructGenesis();
-    fs.stat('./chain.json', function(err, stat) {
+  generateHashedTransaction(){
+    return this.constructGenesis();
+  }
+
+
+  writeNewTransaction(){
+    fs.stat('./localchain.json', function(err, stat) {
       if(err == null) {
-          console.log('File exists');
+        console.log('File exists');
+        fs.createWriteStream(config.pathLocalChain,{flags:'a'})
+        .write(JSON.stringify(genesis) + "\n")
       } else if(err.code == 'ENOENT') {
-          // file does not exist
-          fs.createWriteStream('./chain.json')
-          .write(JSON.stringify(genesis))
+        // file does not exist
+        fs.createWriteStream(config.pathLocalChain)
+        .write(JSON.stringify(genesis))
       } else {
-          console.log('Some other error: ', err.code);
+        console.log('Some other error: ', err.code);
+      }
+    });
+  }
+
+  readLine(){
+    fs.stat(config.pathLocalChain, (err,stat)=>{
+      if(!err) {
+        console.log("file exist");
+        const rl = readline.createInterface({
+          input: fs.createReadStream(config.pathLocalChain),
+          crlfDelay: Infinity
+        });
+
+        rl.on('line', (line) => { 
+          console.log(line);
+        });
       }
     });
   }
 }
-/* harmony export (immutable) */ __webpack_exports__["a"] = Hashchain;
+/* harmony export (immutable) */ __webpack_exports__["a"] = Localchain;
 
 
 
@@ -169,7 +193,7 @@ class Hashchain {
 /* 4 */
 /***/ (function(module, exports) {
 
-module.exports = {"totalSupply":50000000,"name":"AliveChain","digitsAfterDecimalPoint":8}
+module.exports = {"totalSupply":50000000,"name":"AliveChain","digitsAfterDecimalPoint":8,"pathLocalChain":"./localchain.ndjson"}
 
 /***/ }),
 /* 5 */
@@ -179,6 +203,12 @@ module.exports = require("fs");
 
 /***/ }),
 /* 6 */
+/***/ (function(module, exports) {
+
+module.exports = require("readline");
+
+/***/ }),
+/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -201,7 +231,7 @@ class Wallet {
     return __WEBPACK_IMPORTED_MODULE_0__Encrypt__["a" /* default */].publicKey(privateKey);
   }
 }
-/* harmony export (immutable) */ __webpack_exports__["a"] = Wallet;
+/* unused harmony export default */
 
 
 
