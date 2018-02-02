@@ -15,4 +15,13 @@ export default class Wallet {
   createPublicKey(privateKey) {
     return Encrypt.publicKey(privateKey);
   }
+
+  createWallet(){
+    let privateKey = this.createPrivateKey();
+    let publicKey = this.createPublicKey(privateKey);
+    return {
+      privateKey : privateKey,
+      publicKey : publicKey,
+    }
+  }
 }

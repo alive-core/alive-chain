@@ -34,11 +34,9 @@ export default class Localchain {
     return this.constructGenesis();
   }
 
-
   writeNewTransaction(){
     fs.stat(config.pathLocalChain, (err, stat)=> {
       if(err == null) {
-        console.log('File exists');
         fs.createWriteStream(config.pathLocalChain,{flags:'a'})
         .write(JSON.stringify(genesis) + "\n")
       } else if(err.code == 'ENOENT') {
@@ -51,10 +49,9 @@ export default class Localchain {
     });
   }
 
-  readLine(){
+  readLines(){
     fs.stat(config.pathLocalChain, (err,stat)=>{
       if(!err) {
-        console.log("file exist");
         const rl = readline.createInterface({
           input: fs.createReadStream(config.pathLocalChain),
           crlfDelay: Infinity
