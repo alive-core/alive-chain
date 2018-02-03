@@ -71,19 +71,33 @@
 const crypto = __webpack_require__(1);
 class Encrypt {
   static transaction (from,to,now,units) {
-    const hash = crypto.createHash('sha512');
+    const hash = crypto.createHash('sha256');
     hash.update( from + to + now + units);
     return hash.digest("hex");
   }
   
   static publicKey (privateKey) {
-    const hash = crypto.createHash('sha512');
+    const hash = crypto.createHash('sha256');
     hash.update(privateKey);
-    return hash.digest("hex");
+    return "pk-" + hash.digest("hex").substr(0,50);
   }
 
-  static privateKey () {
+  static privateKey() {
     return crypto.randomBytes(35).toString('hex');
+  }
+
+  static secretTransactionKey (privateKey) {
+    let secret = privateKey.substr(0,10)
+    const hash = crypto.createHash('sha256');
+    hash.update(secret);
+    return "st-" + hash.digest("hex").substr(0,40);
+  }
+
+  static publicSignature (privateKey) {
+    let secret = privateKey.substr(0,15)
+    const hash = crypto.createHash('sha256');
+    hash.update(secret);
+    return "ps-" + hash.digest("hex");
   }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Encrypt;
@@ -107,11 +121,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-//const privateKey  = new Wallet().createPrivateKey();
-new __WEBPACK_IMPORTED_MODULE_0__app_Localchain__["a" /* default */]().generateHashedTransaction()
+const wallet  = new __WEBPACK_IMPORTED_MODULE_1__app_Wallet__["a" /* default */]().create();
+//new Localchain().generateHashedTransaction()
 //new Localchain().readLine()
 
-//console.log(privateKey);
+console.log(wallet);
 //console.log(new Wallet().createPublicKey(privateKey));
 
 
@@ -148,15 +162,19 @@ class Localchain {
     return transactionObj;
   }
 
+  receiveTransaction(receiveTransaction){
+  }
+
+  sendTransaction(sendTransaction){
+  }
+
   generateHashedTransaction(){
     return this.constructGenesis();
   }
 
-
   writeNewTransaction(){
-    fs.stat('./localchain.json', function(err, stat) {
+    fs.stat(config.pathLocalChain, (err, stat)=> {
       if(err == null) {
-        console.log('File exists');
         fs.createWriteStream(config.pathLocalChain,{flags:'a'})
         .write(JSON.stringify(genesis) + "\n")
       } else if(err.code == 'ENOENT') {
@@ -169,10 +187,9 @@ class Localchain {
     });
   }
 
-  readLine(){
+  readLines(){
     fs.stat(config.pathLocalChain, (err,stat)=>{
       if(!err) {
-        console.log("file exist");
         const rl = readline.createInterface({
           input: fs.createReadStream(config.pathLocalChain),
           crlfDelay: Infinity
@@ -180,12 +197,12 @@ class Localchain {
 
         rl.on('line', (line) => { 
           console.log(line);
-        });
+        }); 
       }
     });
   }
 }
-/* harmony export (immutable) */ __webpack_exports__["a"] = Localchain;
+/* unused harmony export default */
 
 
 
@@ -230,8 +247,31 @@ class Wallet {
   createPublicKey(privateKey) {
     return __WEBPACK_IMPORTED_MODULE_0__Encrypt__["a" /* default */].publicKey(privateKey);
   }
+
+  createSecretTransactionKey(privateKey) {
+    return __WEBPACK_IMPORTED_MODULE_0__Encrypt__["a" /* default */].secretTransactionKey(privateKey);
+  }
+
+  createPublicSignature(privateKey) {
+    return __WEBPACK_IMPORTED_MODULE_0__Encrypt__["a" /* default */].publicSignature(privateKey);
+  }
+
+  create(){
+    let privateKey = this.createPrivateKey();
+    let publicKey = this.createPublicKey(privateKey);
+    let secretKey = this.createSecretTransactionKey(privateKey);
+    let publicSignature = this.createPublicSignature(privateKey);
+    
+    return {
+      privateKey : privateKey,
+      publicKey : publicKey,
+      secretKey : secretKey,
+      publicSignature : publicSignature,
+
+    }
+  }
 }
-/* unused harmony export default */
+/* harmony export (immutable) */ __webpack_exports__["a"] = Wallet;
 
 
 

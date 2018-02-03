@@ -59,7 +59,7 @@ export default class Localchain {
 
         rl.on('line', (line) => { 
           console.log(line);
-        });
+        }); 
       }
     });
   }

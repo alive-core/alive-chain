@@ -9,7 +9,7 @@ export default class Encrypt {
   static publicKey (privateKey) {
     const hash = crypto.createHash('sha256');
     hash.update(privateKey);
-    return hash.digest("hex");
+    return "pk-" + hash.digest("hex").substr(0,50);
   }
 
   static privateKey() {
@@ -17,9 +17,16 @@ export default class Encrypt {
   }
 
   static secretTransactionKey (privateKey) {
-    secret = privateKey.substr(0,10)
+    let secret = privateKey.substr(0,10)
     const hash = crypto.createHash('sha256');
     hash.update(secret);
-    return hash.digest("hex");
+    return "st-" + hash.digest("hex").substr(0,40);
+  }
+
+  static publicSignature (privateKey) {
+    let secret = privateKey.substr(0,15)
+    const hash = crypto.createHash('sha256');
+    hash.update(secret);
+    return "ps-" + hash.digest("hex");
   }
 }
