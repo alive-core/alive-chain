@@ -1,10 +1,15 @@
-import Localchain from "./app/Localchain";
-import Wallet from "./app/Wallet";
+// import Localchain from "./app/Localchain";
+// import Wallet from "./app/Wallet";
+import Server from "./app/Server";
 
-const wallet  = new Wallet().create();
-//new Localchain().generateHashedTransaction()
-//new Localchain().readLine()
+const s = new Server()
+s.create();
+s.listen(5000)
 
-console.log(wallet);
-//console.log(new Wallet().createPublicKey(privateKey));
+// const wallet  = new Wallet().create();
+// new Localchain().generateHashedTransaction()
+// new Localchain().readLine()
+
+// console.log(wallet);
+// console.log(new Wallet().createPublicKey(privateKey));
 

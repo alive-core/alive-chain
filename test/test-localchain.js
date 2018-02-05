@@ -1,5 +1,5 @@
 let expect = require("chai").expect;
-import Hashchain from "../app/Hashchain"
+import Localchain from "../app/Localchain"
 
 describe("Hashchain",()=>{
   describe("#ValidateConfig",()=>{

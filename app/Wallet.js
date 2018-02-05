@@ -12,23 +12,23 @@ export default class Wallet {
     return Encrypt.privateKey();
   }
   
-  createPublicKey(privateKey) {
+  getPublicKey(privateKey) {
     return Encrypt.publicKey(privateKey);
   }
 
-  createSecretTransactionKey(privateKey) {
+  getSecretTransactionKey(privateKey) {
     return Encrypt.secretTransactionKey(privateKey);
   }
 
-  createPublicSignature(privateKey) {
+  getPublicSignature(privateKey) {
     return Encrypt.publicSignature(privateKey);
   }
 
   create(){
     let privateKey = this.createPrivateKey();
-    let publicKey = this.createPublicKey(privateKey);
-    let secretKey = this.createSecretTransactionKey(privateKey);
-    let publicSignature = this.createPublicSignature(privateKey);
+    let publicKey = this.getPublicKey(privateKey);
+    let secretKey = this.getSecretTransactionKey(privateKey);
+    let publicSignature = this.getPublicSignature(privateKey);
     
     return {
       privateKey : privateKey,
@@ -37,5 +37,9 @@ export default class Wallet {
       publicSignature : publicSignature,
 
     }
+  }
+
+  sendTransaction(transactionObj){
+    return {...transactionObj,type:"sended"}
   }
 }

@@ -1,1 +1,6 @@
+#ignore directories
 node_modules/
+.nyc_output/
+
+#ignore files
+localchain.ndjson

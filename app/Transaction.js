@@ -23,6 +23,7 @@ export default class Transaction {
   buildTransaction(fromProductKey,toPublicKey,now,hash,units) {
     let transactionObj = {}; 
     return transactionObj[hash] =  {
+      type: "transaction",
       from : fromProductKey,
       to : toPublicKey,
       timestamp : now,

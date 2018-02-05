@@ -8,7 +8,9 @@
     "watch": "webpack --watch",
     "nodemon": "nodemon ./dist/bundle.js",
     "start": "npm run build && node ./dist/bundle.js",
-    "test": "mocha --require babel-core/register --reporter nyan"
+    "test": "nyc --reporter=html --reporter=text mocha --require babel-core/register --reporter nyan",
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
+
   },
   "author": "Gaetan Puleo <gaetan.puleo.dev@gmail.com>",
   "license": "ISC",
@@ -17,6 +19,8 @@
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.1",
+    "coveralls": "^3.0.0",
+    "nyc": "^11.4.1",
     "webpack": "^3.10.0"
   },
   "dependencies": {

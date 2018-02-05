@@ -23,8 +23,14 @@ export default class Localchain {
                         transactionObj.units);
     return transactionObj;
   }
-
+  
+  verifGenesis(){
+    let genesis = this.constructGenesis();
+    this.writeNewTransaction(genesis);
+  }
+  
   receiveTransaction(receiveTransaction){
+    this.writeNewTransaction(receiveTransaction);
   }
 
   sendTransaction(sendTransaction){
@@ -34,15 +40,15 @@ export default class Localchain {
     return this.constructGenesis();
   }
 
-  writeNewTransaction(){
+  writeNewTransaction(transactionObj){
     fs.stat(config.pathLocalChain, (err, stat)=> {
       if(err == null) {
         fs.createWriteStream(config.pathLocalChain,{flags:'a'})
-        .write(JSON.stringify(genesis) + "\n")
+        .write(JSON.stringify(transactionObj) + "\n")
       } else if(err.code == 'ENOENT') {
         // file does not exist
         fs.createWriteStream(config.pathLocalChain)
-        .write(JSON.stringify(genesis))
+        .write(JSON.stringify(transactionObj) + "\n")
       } else {
         console.log('Some other error: ', err.code);
       }
