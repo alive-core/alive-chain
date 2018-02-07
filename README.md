@@ -1,1 +1,1 @@
-# alive-chain
+# Open Network Initiative
