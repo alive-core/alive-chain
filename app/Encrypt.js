@@ -9,7 +9,7 @@ export default class Encrypt {
   static publicKey (privateKey) {
     const hash = crypto.createHash('sha256');
     hash.update(privateKey);
-    return "pk-" + hash.digest("hex").substr(0,50);
+    return "pk-" + hash.digest("hex")
   }
 
   static privateKey() {

@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Code coverage report for Encrypt.js</title>
+    <title>Code coverage report for Wallet.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="prettify.css" />
     <link rel="stylesheet" href="base.css" />
@@ -16,13 +16,13 @@
 <div class='wrapper'>
   <div class='pad1'>
     <h1>
-      <a href="index.html">All files</a> Encrypt.js
+      <a href="index.html">All files</a> Wallet.js
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">31.25% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>5/16</span>
+        <span class='fraction'>7/7</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
@@ -35,13 +35,13 @@
         <span class='fraction'>0/0</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">31.25% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>5/16</span>
+        <span class='fraction'>7/7</span>
       </div>
     </div>
   </div>
-  <div class='status-line low'></div>
+  <div class='status-line high'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -65,28 +65,8 @@
 20
 21
 22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+23</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -94,49 +74,39 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const crypto = require("crypto");
-export default class Encrypt {
-  static transaction (from,to,now,units) {
-    const hash = <span class="cstat-no" title="statement not covered" >crypto.createHash('sha256');</span>
-<span class="cstat-no" title="statement not covered" >    hash.update( from + to + now + units);</span>
-<span class="cstat-no" title="statement not covered" >    return hash.digest("hex");</span>
+import Encrypt from "./Encrypt";
+export default class Wallet {
+&nbsp;
+  createPrivateKey() {
+    return Encrypt.privateKey();
   }
   
-  static publicKey (privateKey) {
-    const hash = crypto.createHash('sha256');
-    hash.update(privateKey);
-    return "pk-" + hash.digest("hex")
+  getPublicKey(privateKey) {
+    return Encrypt.publicKey(privateKey);
   }
 &nbsp;
-  static privateKey() {
-    return crypto.randomBytes(35).toString('hex');
-  }
-&nbsp;
-  static secretTransactionKey (privateKey) {
-    let secret = <span class="cstat-no" title="statement not covered" >privateKey.substr(0,10)</span>
-    const hash = <span class="cstat-no" title="statement not covered" >crypto.createHash('sha256');</span>
-<span class="cstat-no" title="statement not covered" >    hash.update(secret);</span>
-<span class="cstat-no" title="statement not covered" >    return "st-" + hash.digest("hex").substr(0,40);</span>
-  }
-&nbsp;
-  static publicSignature (privateKey) {
-    let secret = <span class="cstat-no" title="statement not covered" >privateKey.substr(0,15)</span>
-    const hash = <span class="cstat-no" title="statement not covered" >crypto.createHash('sha256');</span>
-<span class="cstat-no" title="statement not covered" >    hash.update(secret);</span>
-<span class="cstat-no" title="statement not covered" >    return "ps-" + hash.digest("hex");</span>
+  create(){
+    let privateKey = this.createPrivateKey();
+    let publicKey = this.getPublicKey(privateKey);
+    
+    return {
+      privateKey : privateKey,
+      publicKey : publicKey,
+    }
   }
 }
 &nbsp;</pre></td></tr>
