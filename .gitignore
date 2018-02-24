@@ -4,4 +4,4 @@ node_modules/
 
 #ignore files
 .DS_Store
-localchain.ndjson
+.vscode
